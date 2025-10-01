@@ -14,8 +14,10 @@ const MatrixRain = () => {
     canvas.height = window.innerHeight;
 
     const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
+    const isMobile = window.innerWidth < 768;
+    const fontSize = isMobile ? 16 : 14;
+    const columnSpacing = isMobile ? fontSize * 2 : fontSize; // Reduce columns on mobile
+    const columns = Math.floor(canvas.width / columnSpacing);
     const drops: number[] = [];
 
     for (let i = 0; i < columns; i++) {
@@ -31,7 +33,7 @@ const MatrixRain = () => {
 
       for (let i = 0; i < drops.length; i++) {
         const text = characters[Math.floor(Math.random() * characters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        ctx.fillText(text, i * columnSpacing, drops[i] * fontSize);
 
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
@@ -40,7 +42,8 @@ const MatrixRain = () => {
       }
     };
 
-    const interval = setInterval(draw, 33);
+    // Slower refresh rate on mobile for better performance
+    const interval = setInterval(draw, isMobile ? 50 : 33);
 
     const handleResize = () => {
       canvas.width = window.innerWidth;

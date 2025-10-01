@@ -75,30 +75,30 @@ const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col min-h-[500px] lg:min-h-0">
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-primary/30 bg-card/50">
+      <div className="flex items-center gap-2 px-3 sm:px-4 py-2 border-b border-primary/30 bg-card/50">
         <TerminalIcon className="w-4 h-4 text-primary" />
-        <span className="text-xs text-primary font-mono">TERMINAL_OS v2050.3</span>
-        <div className="ml-auto flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-destructive"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-primary"></div>
+        <span className="text-[10px] sm:text-xs text-primary font-mono truncate">TERMINAL_OS v2050.3</span>
+        <div className="ml-auto flex gap-1.5 sm:gap-2">
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-destructive"></div>
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-primary"></div>
         </div>
       </div>
 
       {/* File System Navigation */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 p-4 border-b border-primary/30 bg-card/30">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 p-3 sm:p-4 border-b border-primary/30 bg-card/30">
         {fileSystem.map((file) => (
           <button
             key={file.command}
             onClick={() => onNavigate(file.command)}
-            className={`group flex flex-col items-center gap-2 p-3 rounded border border-primary/20 bg-muted/20 hover:bg-muted/40 hover:border-primary/60 transition-all hover:scale-105 ${
+            className={`group flex flex-col items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded border border-primary/20 bg-muted/20 active:scale-95 sm:hover:bg-muted/40 sm:hover:border-primary/60 transition-all sm:hover:scale-105 min-h-[60px] sm:min-h-0 ${
               currentSection === file.command ? 'border-primary bg-primary/10' : ''
             }`}
           >
-            <file.icon className={`w-6 h-6 ${file.color} group-hover:animate-pulse-glow`} />
-            <span className="text-xs text-center font-mono">{file.name}</span>
+            <file.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${file.color} group-active:animate-pulse-glow sm:group-hover:animate-pulse-glow`} />
+            <span className="text-[10px] sm:text-xs text-center font-mono leading-tight">{file.name}</span>
           </button>
         ))}
       </div>
@@ -106,12 +106,12 @@ const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
       {/* Terminal History */}
       <div
         ref={historyRef}
-        className="flex-1 overflow-y-auto p-4 space-y-1 font-mono text-sm bg-background/50"
+        className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1 font-mono text-xs sm:text-sm bg-background/50"
       >
         {history.map((line, index) => (
           <div
             key={index}
-            className={`${
+            className={`break-words ${
               line.startsWith('>')
                 ? line.includes('ERROR')
                   ? 'text-destructive'
@@ -125,16 +125,16 @@ const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
       </div>
 
       {/* Terminal Input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 px-4 py-3 border-t border-primary/30 bg-card/50">
-        <span className="text-primary font-mono">{'>'}</span>
+      <form onSubmit={handleSubmit} className="flex items-center gap-2 px-3 sm:px-4 py-3 border-t border-primary/30 bg-card/50">
+        <span className="text-primary font-mono text-sm">{'>'}</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent outline-none text-primary font-mono placeholder:text-muted-foreground"
-          placeholder="Type a command..."
-          autoFocus
+          className="flex-1 bg-transparent outline-none text-primary font-mono placeholder:text-muted-foreground text-sm"
+          placeholder="Type command..."
+          autoComplete="off"
         />
         <span className="terminal-cursor"></span>
       </form>

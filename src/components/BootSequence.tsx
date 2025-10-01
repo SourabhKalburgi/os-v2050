@@ -43,13 +43,13 @@ const BootSequence = ({ onComplete }: BootSequenceProps) => {
   }, [currentIndex, onComplete]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
-      <div className="w-full max-w-3xl p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-3xl">
         <div className="space-y-1">
           {lines.map((line, index) => (
             <div
               key={index}
-              className={`font-mono text-sm md:text-base ${
+              className={`font-mono text-xs sm:text-sm md:text-base ${
                 line.includes('GRANTED') || line.includes('READY')
                   ? 'text-primary text-glow font-bold'
                   : line.includes('ERROR')
