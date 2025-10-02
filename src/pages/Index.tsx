@@ -39,21 +39,56 @@ const Index = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        // Find the entry with the highest intersection ratio
+        let maxRatio = 0;
+        let activeEntry = null;
+        
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('data-section-id');
-            if (id) setCurrentSection(id);
+          if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+            maxRatio = entry.intersectionRatio;
+            activeEntry = entry;
           }
         });
+        
+        if (activeEntry) {
+          const id = activeEntry.target.getAttribute('data-section-id');
+          if (id) setCurrentSection(id);
+        }
       },
-      { root: null, rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+      { 
+        root: null, 
+        rootMargin: '-20% 0px -20% 0px', 
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 0.9, 1] 
+      }
     );
 
     Object.values(sectionRefs).forEach((ref) => {
       if (ref.current) observer.observe(ref.current);
     });
 
-    return () => observer.disconnect();
+    // Fallback: Set initial section based on scroll position after a short delay
+    const fallbackTimer = setTimeout(() => {
+      const scrollY = window.scrollY;
+      const sections = Object.entries(sectionRefs);
+      
+      for (const [key, ref] of sections) {
+        if (ref.current) {
+          const rect = ref.current.getBoundingClientRect();
+          const elementTop = rect.top + scrollY;
+          const elementBottom = elementTop + rect.height;
+          
+          if (scrollY >= elementTop - 200 && scrollY < elementBottom - 200) {
+            setCurrentSection(key);
+            break;
+          }
+        }
+      }
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, [sectionRefs]);
 
   useEffect(() => {
@@ -84,38 +119,65 @@ const Index = () => {
   useEffect(() => {
     const onScroll = () => {
       const trigger = 120; // px from top before collapsing to dock
-      const shouldDock = (window.scrollY || window.pageYOffset) > trigger;
+      const scrollY = window.scrollY || window.pageYOffset;
+      const shouldDock = scrollY > trigger;
       setDockMode(shouldDock);
+      
+      // Additional scroll-based section detection for mobile reliability
+      if (shouldDock) {
+        const sections = Object.entries(sectionRefs);
+        let closestSection = 'about';
+        let minDistance = Infinity;
+        
+        sections.forEach(([key, ref]) => {
+          if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const viewportCenter = window.innerHeight / 2;
+            const distance = Math.abs(center - viewportCenter);
+            
+            if (distance < minDistance && rect.top < viewportCenter && rect.bottom > 0) {
+              minDistance = distance;
+              closestSection = key;
+            }
+          }
+        });
+        
+        // Only update if we found a valid section and it's different from current
+        if (closestSection !== currentSection) {
+          setCurrentSection(closestSection);
+        }
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [sectionRefs, currentSection]);
 
   if (isBooting) {
     return <BootSequence onComplete={() => setIsBooting(false)} />;
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-visible">
+    <div className="relative min-h-screen w-full overflow-x-hidden">
       <MatrixRain />
       
-      <div className="relative z-40 min-h-screen w-full p-3 sm:p-4 md:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="relative z-40 min-h-screen w-full px-2 py-3 sm:p-4 md:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto w-full">
           {/* Header */}
-          <header className="sticky top-0 z-30 mb-6 sm:mb-8 p-4 sm:p-6 rounded border border-primary/30 bg-card/40 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md animate-fadeInUp">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary text-glow mb-2 font-mono leading-tight">
+          <header className="sticky top-0 z-30 mb-4 sm:mb-6 md:mb-8 p-3 sm:p-4 md:p-6 rounded border border-primary/30 bg-card/40 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md animate-fadeInUp w-full overflow-hidden">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-primary text-glow mb-2 font-mono leading-tight break-words">
               {'>'} SOURABH K
             </h1>
-            <p className="text-terminal-cyan font-mono text-xs sm:text-sm md:text-base">
+            <p className="text-terminal-cyan font-mono text-[10px] sm:text-xs md:text-sm lg:text-base break-words">
               v2050.3 // Full-Stack Developer // Software Engineer
             </p>
           </header>
 
           {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 w-full">
             {/* Terminal Section */}
-            <div className={`order-2 lg:order-1 transition-all duration-300 ${dockMode ? 'lg:col-span-0' : 'lg:col-span-1'}`}>
+            <div className={`order-2 lg:order-1 transition-all duration-300 w-full ${dockMode ? 'lg:col-span-0' : 'lg:col-span-1'}`}>
               <div className={`animate-fadeInUp ${dockMode ? 'lg:sticky lg:top-8' : ''}`} style={{ animationDelay: '0.1s' }}>
                 {dockMode ? (
                   <>
@@ -137,29 +199,29 @@ const Index = () => {
             </div>
 
             {/* Content Section */}
-            <div className={`order-1 lg:order-2 animate-fadeInUp transition-all duration-300 ${dockMode ? 'lg:col-span-3' : 'lg:col-span-2'}`} style={{ animationDelay: '0.2s' }}>
-              <div ref={sectionRefs.about} data-section-id="about" className="panel-glass rounded border border-primary/30 p-4 sm:p-6 mb-6 sm:mb-8 will-change-transform" data-parallax-speed="0.04">
-                <h2 className="text-xl sm:text-2xl font-mono text-primary mb-3">/root/about-me.sys</h2>
+            <div className={`order-1 lg:order-2 animate-fadeInUp transition-all duration-300 w-full min-w-0 ${dockMode ? 'lg:col-span-3' : 'lg:col-span-2'}`} style={{ animationDelay: '0.2s' }}>
+              <div ref={sectionRefs.about} data-section-id="about" className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 will-change-transform w-full overflow-hidden" data-parallax-speed="0.04">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-primary mb-3 break-words">/root/about-me.sys</h2>
                 <AboutSection />
               </div>
 
-              <div ref={sectionRefs.projects} data-section-id="projects" className="panel-glass rounded border border-primary/30 p-4 sm:p-6 mb-6 sm:mb-8 will-change-transform" data-parallax-speed="0.035">
-                <h2 className="text-xl sm:text-2xl font-mono text-terminal-cyan mb-3">/root/projects.exe</h2>
+              <div ref={sectionRefs.projects} data-section-id="projects" className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 will-change-transform w-full overflow-hidden" data-parallax-speed="0.035">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-terminal-cyan mb-3 break-words">/root/projects.exe</h2>
                 <ProjectsSection />
               </div>
 
-              <div ref={sectionRefs.skills} data-section-id="skills" className="panel-glass rounded border border-primary/30 p-4 sm:p-6 mb-6 sm:mb-8 will-change-transform" data-parallax-speed="0.03">
-                <h2 className="text-xl sm:text-2xl font-mono text-terminal-purple mb-3">/root/skills.log</h2>
+              <div ref={sectionRefs.skills} data-section-id="skills" className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 will-change-transform w-full overflow-hidden" data-parallax-speed="0.03">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-terminal-purple mb-3 break-words">/root/skills.log</h2>
                 <SkillsSection />
               </div>
 
-              <div ref={sectionRefs.achievements} data-section-id="achievements" className="panel-glass rounded border border-primary/30 p-4 sm:p-6 mb-6 sm:mb-8 will-change-transform" data-parallax-speed="0.028">
-                <h2 className="text-xl sm:text-2xl font-mono text-terminal-pink mb-3">/root/achievements.dat</h2>
+              <div ref={sectionRefs.achievements} data-section-id="achievements" className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 will-change-transform w-full overflow-hidden" data-parallax-speed="0.028">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-terminal-pink mb-3 break-words">/root/achievements.dat</h2>
                 <AchievementsSection />
               </div>
 
-              <div ref={sectionRefs.contact} data-section-id="contact" className="panel-glass rounded border border-primary/30 p-4 sm:p-6 mb-2 sm:mb-24 will-change-transform" data-parallax-speed="0.025">
-                <h2 className="text-xl sm:text-2xl font-mono text-primary mb-3">/root/contact.net</h2>
+              <div ref={sectionRefs.contact} data-section-id="contact" className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-2 sm:mb-24 will-change-transform w-full overflow-hidden" data-parallax-speed="0.025">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-primary mb-3 break-words">/root/contact.net</h2>
                 <ContactSection />
               </div>
             </div>
@@ -168,7 +230,6 @@ const Index = () => {
           {/* Footer */}
           <footer className="mt-8 sm:mt-12 text-center text-muted-foreground font-mono text-[10px] sm:text-xs animate-fadeInUp pb-4" style={{ animationDelay: '0.3s' }}>
             <p>© 2050 TERMINAL_OS // All Systems Operational</p>
-            <p className="mt-1 text-terminal-cyan">Built with React + Tailwind + ❤️</p>
           </footer>
         </div>
       </div>

@@ -77,6 +77,8 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-mono;
     overflow-x: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
   }
   
   /* Scanline effect */
@@ -135,7 +137,7 @@ All colors MUST be HSL.
   }
   
   .panel-glass {
-    background: rgba(0, 20, 40, 0.7);
+    background: rgba(0, 20, 40, 0.342);
     backdrop-filter: blur(10px);
     border: 1px solid hsl(var(--border) / 0.3);
   }
