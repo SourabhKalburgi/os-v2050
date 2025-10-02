@@ -4,9 +4,10 @@ import { Terminal as TerminalIcon, Folder, FileCode, Database, Award, Mail } fro
 interface TerminalProps {
   onNavigate: (section: string) => void;
   currentSection: string;
+  variant?: 'full' | 'dock';
 }
 
-const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
+const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProps) => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([
     '> Welcome to TERMINAL_OS v2050.3',
@@ -74,6 +75,35 @@ const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
     }
   };
 
+  if (variant === 'dock') {
+    return (
+      <div className="flex lg:flex-col flex-row items-center gap-2 sm:gap-3 bg-card/60 border border-primary/30 rounded-2xl lg:rounded-none px-2 py-2 sm:px-3 sm:py-3">
+        <div className="hidden lg:flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded bg-primary/10 border border-primary/30">
+          <TerminalIcon className="w-4 h-4 text-primary" />
+        </div>
+        <div className="flex lg:flex-col flex-row items-center gap-2 sm:gap-3">
+          {fileSystem.map((file) => (
+            <button
+              key={file.command}
+              onClick={() => onNavigate(file.command)}
+              title={file.name}
+              className={`group relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded border transition-all duration-300 ease-out hover:scale-[1.06] ${
+                currentSection === file.command
+                  ? 'border-primary bg-primary/10 shadow-[0_0_12px_rgba(0,255,200,0.35)]'
+                  : 'border-primary/20 bg-muted/20 sm:hover:bg-muted/40 sm:hover:border-primary/60'
+              }`}
+            >
+              <file.icon className={`w-5 h-5 sm:w-5 sm:h-5 ${file.color}`} />
+              <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-xs font-mono px-2 py-1 rounded bg-card/90 border border-primary/20 opacity-0 translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 lg:left-full lg:ml-2 lg:-top-0 lg:translate-x-0 lg:translate-y-0 transition-all duration-300 ease-out">
+                {file.name}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full flex flex-col min-h-[500px] lg:min-h-0">
       {/* Terminal Header */}
@@ -88,17 +118,17 @@ const Terminal = ({ onNavigate, currentSection }: TerminalProps) => {
       </div>
 
       {/* File System Navigation */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 p-3 sm:p-4 border-b border-primary/30 bg-card/30">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 p-3 sm:p-4 border-b border-primary/30 bg-card/30">
         {fileSystem.map((file) => (
           <button
             key={file.command}
             onClick={() => onNavigate(file.command)}
-            className={`group flex flex-col items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded border border-primary/20 bg-muted/20 active:scale-95 sm:hover:bg-muted/40 sm:hover:border-primary/60 transition-all sm:hover:scale-105 min-h-[60px] sm:min-h-0 ${
+            className={`group w-full overflow-hidden flex flex-col items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded border border-primary/20 bg-muted/20 active:scale-95 sm:hover:bg-muted/40 sm:hover:border-primary/60 transition-all sm:hover:scale-105 min-h-[60px] sm:min-h-0 ${
               currentSection === file.command ? 'border-primary bg-primary/10' : ''
             }`}
           >
             <file.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${file.color} group-active:animate-pulse-glow sm:group-hover:animate-pulse-glow`} />
-            <span className="text-[10px] sm:text-xs text-center font-mono leading-tight">{file.name}</span>
+            <span className="text-[10px] sm:text-xs text-center font-mono leading-snug break-words whitespace-normal max-w-full px-1">{file.name}</span>
           </button>
         ))}
       </div>

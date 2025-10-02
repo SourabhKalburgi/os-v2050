@@ -1,34 +1,38 @@
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 const ProjectsSection = () => {
   const projects = [
     {
-      name: 'Neural_Interface_v3',
+      name: 'Group_study_app_v1',
       status: 'DEPLOYED',
-      tech: ['React', 'Three.js', 'WebGL'],
-      description: 'Immersive 3D visualization platform for neural network architectures',
+      tech: ['React', 'MongoDB', 'Express'],
+      description: 'Collaborative app for group study',
       color: 'border-primary',
+      url: 'https://groupstudymernui.onrender.com/',
     },
     {
-      name: 'CyberDash_Analytics',
-      status: 'PRODUCTION',
-      tech: ['Next.js', 'TypeScript', 'D3.js'],
-      description: 'Real-time data analytics dashboard with cyberpunk aesthetics',
+      name: 'AI_research_assistant_v1',
+      status: 'DEPLOYED',
+      tech: ['Python', 'LLM', 'FastAPI'],
+      description: 'AI-powered research assistant',
       color: 'border-terminal-cyan',
+      url: 'https://airesearchassistant-frontend.onrender.com/',
     },
     {
-      name: 'Quantum_Messenger',
-      status: 'BETA',
-      tech: ['WebRTC', 'Socket.io', 'Electron'],
+      name: 'UX_portfolio_v2',
+      status: 'DEPLOYED',
+      tech: ['UX Design', 'UX Research', 'Portfolio','Photography'],
       description: 'Encrypted communication platform with quantum-inspired security',
       color: 'border-terminal-purple',
+      url: 'https://sourabhkalburgi18.wixsite.com/portfolio',
     },
     {
-      name: 'Holo_Portfolio_OS',
-      status: 'LIVE',
-      tech: ['React', 'Framer Motion', 'Tailwind'],
-      description: 'This very portfolio - a terminal-based holographic interface',
+      name: 'Keeper_app',
+      status: 'DEPLOYED',
+      tech: ['React', 'Framer Motion', 'Clone'],
+      description: 'Google Keep clone',
       color: 'border-terminal-pink',
+      url: 'https://keeperapp-gy3m.onrender.com/',
     },
   ];
 
@@ -54,8 +58,19 @@ const ProjectsSection = () => {
           >
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
               <div className="flex-1">
-                <h3 className="text-base sm:text-lg font-bold text-primary group-hover:text-glow mb-2">
-                  {project.name}
+                <h3 className="text-base sm:text-lg font-bold text-primary group-hover:text-glow mb-2 flex items-center gap-2">
+                  <span>{project.name}</span>
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center p-1 rounded border border-primary/20 bg-muted/10 hover:bg-primary/10 hover:border-primary/60 transition-colors"
+                      aria-label={`Open ${project.name}`}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
+                    </a>
+                  ) : null}
                 </h3>
                 <span className={`inline-block text-[10px] sm:text-xs font-mono px-2 py-1 rounded ${
                   project.status === 'DEPLOYED' || project.status === 'LIVE'
@@ -67,14 +82,7 @@ const ProjectsSection = () => {
                   {project.status}
                 </span>
               </div>
-              <div className="flex gap-2">
-                <button className="p-2 rounded active:bg-primary/20 sm:hover:bg-primary/20 transition-colors">
-                  <Github className="w-4 h-4 text-muted-foreground active:text-primary sm:hover:text-primary" />
-                </button>
-                <button className="p-2 rounded active:bg-primary/20 sm:hover:bg-primary/20 transition-colors">
-                  <ExternalLink className="w-4 h-4 text-muted-foreground active:text-primary sm:hover:text-primary" />
-                </button>
-              </div>
+              {/* Action icons removed; link is next to title */}
             </div>
 
             <p className="text-muted-foreground font-mono text-xs sm:text-sm mb-3 leading-relaxed">

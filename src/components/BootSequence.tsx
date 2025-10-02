@@ -4,31 +4,31 @@ interface BootSequenceProps {
   onComplete: () => void;
 }
 
+const BOOT_MESSAGES = [
+  '> INITIALIZING SYSTEM...',
+  '> LOADING KERNEL MODULES...',
+  '> MOUNTING FILE SYSTEMS...',
+  '> STARTING NETWORK SERVICES...',
+  '> ESTABLISHING SECURE CONNECTION...',
+  '> DECRYPTING USER DATA...',
+  '> ACCESSING NEURAL INTERFACE...',
+  '> LOADING HOLOGRAPHIC DISPLAY...',
+  '> PROFILE: TERMINAL_USER',
+  '> STATUS: AUTHENTICATED',
+  '> ACCESS LEVEL: ROOT',
+  '> SYSTEM READY',
+  '',
+  '> ACCESS GRANTED',
+];
+
 const BootSequence = ({ onComplete }: BootSequenceProps) => {
   const [lines, setLines] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const bootMessages = [
-    '> INITIALIZING SYSTEM...',
-    '> LOADING KERNEL MODULES...',
-    '> MOUNTING FILE SYSTEMS...',
-    '> STARTING NETWORK SERVICES...',
-    '> ESTABLISHING SECURE CONNECTION...',
-    '> DECRYPTING USER DATA...',
-    '> ACCESSING NEURAL INTERFACE...',
-    '> LOADING HOLOGRAPHIC DISPLAY...',
-    '> PROFILE: TERMINAL_USER',
-    '> STATUS: AUTHENTICATED',
-    '> ACCESS LEVEL: ROOT',
-    '> SYSTEM READY',
-    '',
-    '> ACCESS GRANTED',
-  ];
-
   useEffect(() => {
-    if (currentIndex < bootMessages.length) {
+    if (currentIndex < BOOT_MESSAGES.length) {
       const timer = setTimeout(() => {
-        setLines((prev) => [...prev, bootMessages[currentIndex]]);
+        setLines((prev) => [...prev, BOOT_MESSAGES[currentIndex]]);
         setCurrentIndex((prev) => prev + 1);
       }, 200);
 
@@ -59,7 +59,7 @@ const BootSequence = ({ onComplete }: BootSequenceProps) => {
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {line}
-              {index === lines.length - 1 && currentIndex < bootMessages.length && (
+              {index === lines.length - 1 && currentIndex < BOOT_MESSAGES.length && (
                 <span className="terminal-cursor ml-1"></span>
               )}
             </div>
