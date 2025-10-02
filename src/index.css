@@ -96,7 +96,7 @@ All colors MUST be HSL.
     );
     background-size: 100% 4px;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1;
     animation: scanline 10s linear infinite;
   }
   
@@ -110,7 +110,7 @@ All colors MUST be HSL.
     height: 100%;
     background: rgba(0, 255, 65, 0.01);
     pointer-events: none;
-    z-index: 9998;
+    z-index: 2;
     animation: flicker 0.15s infinite;
   }
 }
@@ -145,6 +145,21 @@ All colors MUST be HSL.
   .terminal-cursor::after {
     content: '▊';
     animation: blink 1s infinite;
+  }
+  
+  .fixed-header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100 !important;
+    width: 100%;
+    background: transparent;
+    pointer-events: none;
+  }
+  
+  .fixed-header-container > * {
+    pointer-events: auto;
   }
 }
 
@@ -280,4 +295,17 @@ All colors MUST be HSL.
   50% {
     box-shadow: 0 0 20px hsl(var(--primary) / 0.8), 0 0 40px hsl(var(--primary) / 0.4);
   }
+}
+
+@keyframes header-glow {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 20px hsl(var(--primary) / 0.3), 0 0 0 1px hsl(var(--primary) / 0.4);
+  }
+}
+
+.sticky-header {
+  animation: header-glow 3s ease-in-out infinite;
 }

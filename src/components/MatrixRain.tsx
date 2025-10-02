@@ -13,7 +13,8 @@ const MatrixRain = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const characters =
+      '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
     const isMobile = window.innerWidth < 768;
     const fontSize = isMobile ? 16 : 14;
     const columnSpacing = isMobile ? fontSize * 2 : fontSize; // Reduce columns on mobile
@@ -62,6 +63,7 @@ const MatrixRain = () => {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0"
+      style={{ zIndex: 0 }}
     />
   );
 };
