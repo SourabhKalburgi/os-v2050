@@ -54,7 +54,7 @@ const Index = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [sectionRefs]);
 
   useEffect(() => {
     const parallaxNodes = Array.from(document.querySelectorAll('[data-parallax-speed]')) as HTMLElement[];
