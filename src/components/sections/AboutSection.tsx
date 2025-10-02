@@ -10,13 +10,12 @@ const AboutSection = () => {
         <div className="space-y-3 sm:space-y-4 text-muted-foreground font-mono text-sm sm:text-base">
           <p className="leading-relaxed">
             <span className="text-terminal-cyan">{'> '}</span>
-            System architect and digital craftsman operating in the intersection of art and technology.
+            I build web apps that don’t just work, they vibe. From React interfaces smoother than your morning coffee to backend logic that behaves better than most humans, I like making tech feel effortless.
           </p>
           
           <p className="leading-relaxed">
             <span className="text-terminal-cyan">{'> '}</span>
-            Specializing in building immersive web experiences that push the boundaries of what's possible
-            in the browser. From cyberpunk interfaces to AI-powered applications.
+            I’ve dabbled in everything from UX prototyping and animations to Dockerized MERN stacks and AWS deployments. If it involves building, breaking, or debugging something at 2 AM with snacks nearby — I’m in.
           </p>
           
           <div className="mt-4 sm:mt-6 space-y-2">
@@ -35,7 +34,7 @@ const AboutSection = () => {
                 <span className="text-terminal-purple text-xs sm:text-sm">LOCATION</span>
                 <span className="text-primary">{']'}</span>
               </div>
-              <span className="text-terminal-cyan text-xs sm:text-sm">Cyberspace // Node 404</span>
+              <span className="text-terminal-cyan text-xs sm:text-sm">Bangalore // 12.9629° N, 77.5775° E</span>
             </div>
             
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
@@ -44,7 +43,7 @@ const AboutSection = () => {
                 <span className="text-terminal-purple text-xs sm:text-sm">MISSION</span>
                 <span className="text-primary">{']'}</span>
               </div>
-              <span className="text-terminal-cyan text-xs sm:text-sm">Building the future, one pixel at a time</span>
+              <span className="text-terminal-cyan text-xs sm:text-sm">Create digital experiences that make people say, “Wait… you built THIS?”</span>
             </div>
           </div>
         </div>
@@ -53,7 +52,7 @@ const AboutSection = () => {
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         {[
           { label: 'SYSTEMS ONLINE', value: '99.9%', color: 'text-primary' },
-          { label: 'PROJECTS COMPLETED', value: '42+', color: 'text-terminal-cyan' },
+          { label: 'PROJECTS COMPLETED', value: '4+', color: 'text-terminal-cyan' },
           { label: 'COFFEE CONSUMED', value: '∞', color: 'text-terminal-purple' },
         ].map((stat) => (
           <div
