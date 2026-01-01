@@ -161,6 +161,127 @@ All colors MUST be HSL.
   .fixed-header-container > * {
     pointer-events: auto;
   }
+
+  /* Neomorphic Header Styles */
+  .neomorphic-header {
+    background: hsl(var(--card));
+    border: none;
+    box-shadow: 
+      /* Light shadow (top-left) */
+      -8px -8px 16px rgba(0, 255, 200, 0.1),
+      /* Dark shadow (bottom-right) */
+      8px 8px 16px rgba(0, 0, 0, 0.5),
+      /* Inner light highlight */
+      inset -2px -2px 4px rgba(0, 255, 200, 0.05),
+      /* Inner dark shadow */
+      inset 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neomorphic-header-scrolled {
+    background: hsl(var(--card));
+    border: none;
+    box-shadow: 
+      /* Light shadow (top-left) - more subtle when scrolled */
+      -6px -6px 12px rgba(0, 255, 200, 0.08),
+      /* Dark shadow (bottom-right) */
+      6px 6px 12px rgba(0, 0, 0, 0.6),
+      /* Inner light highlight */
+      inset -1px -1px 2px rgba(0, 255, 200, 0.03),
+      /* Inner dark shadow */
+      inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Horizontal Line Animations */
+  .neomorphic-header::before,
+  .neomorphic-header-scrolled::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(140 100% 50% / 0.6),
+      hsl(190 100% 50% / 0.8),
+      hsl(140 100% 50% / 0.6),
+      transparent
+    );
+    animation: scan-line 3s ease-in-out infinite;
+    z-index: 1;
+    box-shadow: 0 0 10px hsl(140 100% 50% / 0.5), 0 0 20px hsl(190 100% 50% / 0.3);
+  }
+
+  .neomorphic-header::after,
+  .neomorphic-header-scrolled::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(190 100% 50% / 0.4),
+      hsl(140 100% 50% / 0.6),
+      hsl(190 100% 50% / 0.4),
+      transparent
+    );
+    animation: scan-line-reverse 4s ease-in-out infinite;
+    z-index: 1;
+    box-shadow: 0 0 8px hsl(190 100% 50% / 0.4);
+  }
+
+  /* Additional horizontal lines using pseudo-elements on inner div */
+  .header-lines-container {
+    position: relative;
+  }
+
+  .header-lines-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(140 100% 50% / 0.1) 20%,
+      hsl(190 100% 50% / 0.2) 50%,
+      hsl(140 100% 50% / 0.1) 80%,
+      transparent 100%
+    );
+    transform: translateY(-50%);
+    animation: pulse-line 2.5s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  .header-lines-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(140 100% 50% / 0.03) 2px,
+        hsl(140 100% 50% / 0.03) 4px
+      );
+    pointer-events: none;
+    z-index: 0;
+    animation: data-stream 8s linear infinite;
+  }
 }
 
 @keyframes scanline {
@@ -308,4 +429,59 @@ All colors MUST be HSL.
 
 .sticky-header {
   animation: header-glow 3s ease-in-out infinite;
+}
+
+/* Horizontal Line Animation Keyframes */
+@keyframes scan-line {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes scan-line-reverse {
+  0% {
+    left: 100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: -100%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-line {
+  0%, 100% {
+    opacity: 0.1;
+    transform: translateY(-50%) scaleX(0.8);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes data-stream {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 20px;
+  }
 }

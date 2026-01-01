@@ -174,38 +174,32 @@ const Index = () => {
 
       {/* Fixed Header - Always visible at top */}
       <div className="fixed-header-container">
-        <div className="px-2 py-3 sm:px-4 sm:py-4 md:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto w-full">
-            <header
-              className={`p-3 sm:p-4 md:p-6 rounded-lg border w-full overflow-hidden transition-all duration-500 ease-out animate-fadeInUp ${
+        <header
+          className={`w-full p-3 sm:p-4 md:p-6 transition-all duration-500 ease-out animate-fadeInUp ${
+            isHeaderScrolled ? 'neomorphic-header-scrolled' : 'neomorphic-header'
+          }`}
+        >
+          <div className="header-lines-container relative z-10 px-2 sm:px-4 md:px-6 lg:px-8">
+            <h1
+              className={`font-bold text-primary text-glow mb-2 font-mono leading-tight break-words transition-all duration-500 ${
                 isHeaderScrolled
-                  ? 'border-primary/60 bg-card/95 backdrop-blur-2xl shadow-[0_12px_40px_rgba(0,0,0,0.6)] sticky-header scale-[0.98] sm:scale-100'
-                  : 'border-primary/40 bg-card/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]'
-              } supports-[backdrop-filter]:backdrop-blur-xl before:absolute before:inset-0 before:bg-gradient-to-r before:from-primary/5 before:to-transparent before:pointer-events-none`}
+                  ? 'text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl'
+                  : 'text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'
+              }`}
             >
-              <div className="relative z-10">
-                <h1
-                  className={`font-bold text-primary text-glow mb-2 font-mono leading-tight break-words transition-all duration-500 ${
-                    isHeaderScrolled
-                      ? 'text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl'
-                      : 'text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl'
-                  }`}
-                >
-                  {'>'} SOURABH K
-                </h1>
-                <p
-                  className={`text-terminal-cyan font-mono break-words transition-all duration-500 ${
-                    isHeaderScrolled
-                      ? 'text-[9px] sm:text-[10px] md:text-xs lg:text-sm opacity-90'
-                      : 'text-[10px] sm:text-xs md:text-sm lg:text-base opacity-100'
-                  }`}
-                >
-                  v2050.3 // Full-Stack Developer // Software Engineer
-                </p>
-              </div>
-            </header>
+              {'>'} SOURABH K
+            </h1>
+            <p
+              className={`text-terminal-cyan font-mono break-words transition-all duration-500 ${
+                isHeaderScrolled
+                  ? 'text-[9px] sm:text-[10px] md:text-xs lg:text-sm opacity-90'
+                  : 'text-[10px] sm:text-xs md:text-sm lg:text-base opacity-100'
+              }`}
+            >
+              v2050.3 // Full-Stack Developer // Software Engineer
+            </p>
           </div>
-        </div>
+        </header>
       </div>
 
       {/* Main Content */}
