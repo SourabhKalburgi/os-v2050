@@ -485,3 +485,315 @@ All colors MUST be HSL.
     background-position: 0 20px;
   }
 }
+
+/* Photography Section Styles */
+.photo-tile {
+  position: relative;
+}
+
+.photo-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: linear-gradient(135deg, hsl(140 100% 50% / 0.1), hsl(190 100% 50% / 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.photo-tile:hover::before {
+  opacity: 1;
+}
+
+.photo-glitch {
+  animation: photo-glitch 0.3s ease-in-out infinite;
+}
+
+@keyframes photo-glitch {
+  0%, 100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, 1px);
+    filter: hue-rotate(90deg);
+  }
+  20% {
+    transform: translate(1px, -1px);
+    filter: hue-rotate(180deg);
+  }
+  30% {
+    transform: translate(-1px, -1px);
+    filter: hue-rotate(270deg);
+  }
+  40% {
+    transform: translate(1px, 1px);
+    filter: hue-rotate(360deg);
+  }
+  50% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Terminal CRT Monitor Preview Styles */
+.terminal-crt-preview {
+  animation: terminal-boot 0.4s ease-out;
+  pointer-events: auto;
+}
+
+@keyframes terminal-boot {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.terminal-monitor {
+  position: relative;
+  width: min(90vw, 600px);
+  max-width: 600px;
+}
+
+.terminal-monitor-bezel {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  border: 3px solid hsl(140 100% 50% / 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 200, 0.2),
+    0 0 60px rgba(0, 255, 200, 0.1),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.terminal-monitor-bezel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  padding: 2px;
+  background: linear-gradient(135deg, hsl(140 100% 50% / 0.1), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.terminal-screen {
+  background: #000;
+  border: 2px solid hsl(140 100% 50% / 0.4);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  box-shadow: 
+    inset 0 0 40px rgba(0, 255, 200, 0.1),
+    0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.terminal-scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 200, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+  animation: scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+.terminal-screen-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: hsl(220 20% 8%);
+  border-bottom: 1px solid hsl(140 100% 50% / 0.2);
+  font-size: 10px;
+}
+
+.terminal-image-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.terminal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: image-fade-in 0.3s ease-out;
+}
+
+@keyframes image-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.terminal-image-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  padding: 8px;
+  border-top: 1px solid hsl(140 100% 50% / 0.2);
+}
+
+.terminal-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  background: hsl(220 20% 8%);
+  border-top: 1px solid hsl(140 100% 50% / 0.2);
+}
+
+.terminal-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid hsl(140 100% 50% / 0.3);
+  background: hsl(220 20% 12%);
+  color: hsl(140 100% 50%);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.terminal-nav-btn:hover {
+  background: hsl(140 100% 50% / 0.2);
+  border-color: hsl(140 100% 50% / 0.6);
+  box-shadow: 0 0 12px hsl(140 100% 50% / 0.3);
+  transform: scale(1.1);
+}
+
+.terminal-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.terminal-play-btn {
+  width: 40px;
+  background: hsl(140 100% 50% / 0.1);
+}
+
+.terminal-play-btn:hover {
+  background: hsl(140 100% 50% / 0.3);
+}
+
+.terminal-footer {
+  padding: 6px 8px;
+  background: hsl(220 20% 6%);
+  border-top: 1px solid hsl(140 100% 50% / 0.1);
+  text-align: center;
+}
+
+.terminal-stand {
+  width: 60px;
+  height: 20px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  margin: 8px auto 0;
+  border: 2px solid hsl(140 100% 50% / 0.2);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  position: relative;
+}
+
+.terminal-stand::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: hsl(140 100% 50% / 0.2);
+}
+
+.terminal-stand-base {
+  width: 120px;
+  height: 8px;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  margin: 0 auto;
+  border: 2px solid hsl(140 100% 50% / 0.2);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .terminal-monitor {
+    width: 95vw;
+    max-width: 95vw;
+  }
+  
+  .terminal-header {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+  
+  .terminal-footer {
+    font-size: 7px;
+    padding: 4px 6px;
+  }
+  
+  .terminal-nav-btn {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .terminal-play-btn {
+    width: 36px;
+  }
+}

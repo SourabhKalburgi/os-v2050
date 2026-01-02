@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { Terminal as TerminalIcon, Folder, FileCode, Database, Award, Mail } from 'lucide-react';
+import {
+  Terminal as TerminalIcon,
+  Folder,
+  FileCode,
+  Database,
+  Award,
+  Camera,
+  Mail,
+} from 'lucide-react';
 
 interface TerminalProps {
   onNavigate: (section: string) => void;
@@ -22,6 +30,12 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
     { name: 'projects.exe', icon: Folder, command: 'projects', color: 'text-terminal-cyan' },
     { name: 'skills.log', icon: Database, command: 'skills', color: 'text-terminal-purple' },
     { name: 'achievements.dat', icon: Award, command: 'achievements', color: 'text-terminal-pink' },
+    {
+      name: 'photography.gallery',
+      icon: Camera,
+      command: 'photography',
+      color: 'text-terminal-cyan',
+    },
     { name: 'contact.net', icon: Mail, command: 'contact', color: 'text-primary' },
   ];
 
@@ -46,22 +60,39 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
         '  projects    - View projects',
         '  skills      - View skills',
         '  achievements - View achievements',
+        '  photography - View photography gallery',
         '  contact     - Open contact panel',
         ''
       );
     } else if (command === 'ls') {
-      newHistory.push('', '/root', '├── about-me.sys', '├── projects.exe', '├── skills.log', '├── achievements.dat', '└── contact.net', '');
+      newHistory.push(
+        '',
+        '/root',
+        '├── about-me.sys',
+        '├── projects.exe',
+        '├── skills.log',
+        '├── achievements.dat',
+        '├── photography.gallery',
+        '└── contact.net',
+        ''
+      );
     } else if (command === 'clear') {
       setHistory(['']);
       setInput('');
       return;
-    } else if (['about', 'projects', 'skills', 'achievements', 'contact'].includes(command)) {
+    } else if (
+      ['about', 'projects', 'skills', 'achievements', 'photography', 'contact'].includes(command)
+    ) {
       newHistory.push(`> Loading ${command}...`, '');
       onNavigate(command);
     } else if (command === '') {
       // Empty command, just add blank line
     } else {
-      newHistory.push(`> ERROR: Command not found: ${command}`, `> Type "help" for available commands`, '');
+      newHistory.push(
+        `> ERROR: Command not found: ${command}`,
+        `> Type "help" for available commands`,
+        ''
+      );
     }
 
     // Always keep only the most recent command/output block
@@ -94,11 +125,13 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
                   : 'border-primary/20 bg-muted/20 sm:hover:bg-muted/40 sm:hover:border-primary/60'
               }`}
             >
-              <file.icon className={`w-5 h-5 sm:w-5 sm:h-5 ${
-                currentSection === file.command 
-                  ? `${file.color} drop-shadow-[0_0_8px_currentColor]` 
-                  : file.color
-              }`} />
+              <file.icon
+                className={`w-5 h-5 sm:w-5 sm:h-5 ${
+                  currentSection === file.command
+                    ? `${file.color} drop-shadow-[0_0_8px_currentColor]`
+                    : file.color
+                }`}
+              />
               <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-xs font-mono px-2 py-1 rounded bg-card/90 border border-primary/20 opacity-0 translate-y-1 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 lg:left-full lg:ml-2 lg:-top-0 lg:translate-x-0 lg:translate-y-0 transition-all duration-300 ease-out">
                 {file.name}
               </span>
@@ -114,7 +147,9 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
       {/* Terminal Header */}
       <div className="flex items-center gap-2 px-3 sm:px-4 py-2 border-b border-primary/30 bg-card/50">
         <TerminalIcon className="w-4 h-4 text-primary" />
-        <span className="text-[10px] sm:text-xs text-primary font-mono truncate">TERMINAL_OS v2050.3</span>
+        <span className="text-[10px] sm:text-xs text-primary font-mono truncate">
+          TERMINAL_OS v2050.3
+        </span>
         <div className="ml-auto flex gap-1.5 sm:gap-2">
           <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-destructive"></div>
           <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500"></div>
@@ -129,15 +164,19 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
             key={file.command}
             onClick={() => onNavigate(file.command)}
             className={`group w-full overflow-hidden flex flex-col items-center gap-1.5 sm:gap-2 p-2.5 sm:p-3 rounded border transition-all active:scale-95 sm:hover:scale-105 min-h-[60px] sm:min-h-0 ${
-              currentSection === file.command 
-                ? 'border-primary bg-primary/20 shadow-[0_0_12px_rgba(0,255,200,0.3)] ring-1 ring-primary/30' 
+              currentSection === file.command
+                ? 'border-primary bg-primary/20 shadow-[0_0_12px_rgba(0,255,200,0.3)] ring-1 ring-primary/30'
                 : 'border-primary/20 bg-muted/20 sm:hover:bg-muted/40 sm:hover:border-primary/60'
             }`}
           >
-            <file.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${file.color} group-active:animate-pulse-glow sm:group-hover:animate-pulse-glow ${
-              currentSection === file.command ? 'drop-shadow-[0_0_8px_currentColor]' : ''
-            }`} />
-            <span className="text-[10px] sm:text-xs text-center font-mono leading-snug break-words whitespace-normal max-w-full px-1">{file.name}</span>
+            <file.icon
+              className={`w-5 h-5 sm:w-6 sm:h-6 ${file.color} group-active:animate-pulse-glow sm:group-hover:animate-pulse-glow ${
+                currentSection === file.command ? 'drop-shadow-[0_0_8px_currentColor]' : ''
+              }`}
+            />
+            <span className="text-[10px] sm:text-xs text-center font-mono leading-snug break-words whitespace-normal max-w-full px-1">
+              {file.name}
+            </span>
           </button>
         ))}
       </div>
@@ -164,7 +203,10 @@ const Terminal = ({ onNavigate, currentSection, variant = 'full' }: TerminalProp
       </div>
 
       {/* Terminal Input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-2 px-3 sm:px-4 py-3 border-t border-primary/30 bg-card/50">
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center gap-2 px-3 sm:px-4 py-3 border-t border-primary/30 bg-card/50"
+      >
         <span className="text-primary font-mono text-sm">{'>'}</span>
         <input
           ref={inputRef}
