@@ -6,6 +6,7 @@ import AboutSection from '@/components/sections/AboutSection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import SkillsSection from '@/components/sections/SkillsSection';
 import AchievementsSection from '@/components/sections/AchievementsSection';
+import PhotographySection from '@/components/sections/PhotographySection';
 import ContactSection from '@/components/sections/ContactSection';
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
   const projectsRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLDivElement>(null);
   const achievementsRef = useRef<HTMLDivElement>(null);
+  const photographyRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   const sectionRefs = useMemo(
@@ -26,6 +28,7 @@ const Index = () => {
       projects: projectsRef,
       skills: skillsRef,
       achievements: achievementsRef,
+      photography: photographyRef,
       contact: contactRef,
     }),
     []
@@ -269,6 +272,17 @@ const Index = () => {
                   /root/projects.exe
                 </h2>
                 <ProjectsSection />
+              </div>
+              <div
+                ref={sectionRefs.photography}
+                data-section-id="photography"
+                className="panel-glass rounded border border-primary/30 p-3 sm:p-4 md:p-6 mb-4 sm:mb-6 md:mb-8 will-change-transform w-full overflow-hidden"
+                data-parallax-speed="0.026"
+              >
+                <h2 className="text-lg sm:text-xl md:text-2xl font-mono text-terminal-cyan mb-3 break-words">
+                  /root/photography.gallery
+                </h2>
+                <PhotographySection />
               </div>
 
               <div
